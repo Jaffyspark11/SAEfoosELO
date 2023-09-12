@@ -1,0 +1,33 @@
+need to make it possible to update with 1v1s and 2v2s maybe even 2v1s
+
+1v1s
+
+-pretty easy just use the one from class
+-in sheets, have options for team a and b, player 1 and 2 for each team
+-if 1v1, only put name in player 1 slot, if p2 empty, we know they played alone
+-check if OFF and DEF column is the same
+
+
+DEF, OFF, and 1V1 ratings
+
+Have a DEF and OFF column for team Y and team P
+
+
+
+
+
+-can use google sheets to make it easy for anyone to update, we can pull the data from sheets into pandas df
+-check if player played with partner, if so take average elo of both and put it against average evo of other team
+-
+
+
+
+
+
+
+
+
+
+make the script run every time a new game is added so it updates realtime
+
+
