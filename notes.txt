@@ -20,14 +20,38 @@ Have a DEF and OFF column for team Y and team P
 -check if player played with partner, if so take average elo of both and put it against average evo of other team
 -
 
-
-
-
-
-
-
-
-
 make the script run every time a new game is added so it updates realtime
 
 
+need to get the number of players (n) before I run calculate
+
+1. set all names to ELO of 1000
+
+2. Just gonna have it recalculate everything based on the results df every time, I think automatic recalculation is too tough, potential ammendment
+
+3. We need to collect these variables from the dataframes for each game: tyoe of game, RA/RB the ratings of each player participating, SA/SB the winner and loser, thus the scores of each team (compare yellow to purple, if yellow is bigger then yellow wins, if not they lose) and for K value scaling
+
+4. check if game was a 1v1 or a 2v2 (2v1 will count as a 2v2 with the 1 updating both OFF and DEF rating)
+
+5. calculate the K value based on the score differential, and potential purple v yellow scale
+
+6. if 2v2, calculate average rating of defenses DEF Rating and offenses OFF rating, if 1v1, just use 1v1 rating
+
+7. now run the evaluate elo function on the list of results, will need condtionals to make sure the correct rating is updated
+
+8. loop to next game
+
+
+
+point differential scale
+
+100 for a rock 
+60 win by 5 
+50 win by 4
+40 win by 3
+30 win by 2
+
+
+initialize in evaluate elo function:
+--type of game
+--

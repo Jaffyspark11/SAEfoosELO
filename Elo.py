@@ -29,9 +29,30 @@ def update_RB(RB, SB, EB, K=16):
     return RB
 
 
-def compute_ratings(G, n, K=16):
-    R = [400]*n # initialize the ratings of all players with 400
-    for index, row in G.iterrows(): # for each game, update the ratings based upon the result of the game
+def calculate_K(win_score, lose_score):
+
+    pointDiff = win_score - lose_score
+
+    if pointDiff < 6:
+
+        K = 40 * (pointDiff / 3)
+    
+    else:
+
+        K = 100
+
+    return K
+
+
+
+
+
+def compute_ratings(DF, n):
+    R = [1000]*n # initialize the ratings of all players with 1000
+    for index, row in DF.iterrows(): # for each game, update the ratings based upon the result of the game
+        
+        
+        
         A,B = row["win_ID"], row["lose_ID"] # # extract the player IDs as A and B
         SA,SB = 1,0 # the game result: Player A wins, Player B loses
         
