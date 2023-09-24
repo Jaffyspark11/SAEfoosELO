@@ -76,7 +76,7 @@ def get_average_ratings(RYO, RYD, RPO, RPD, game_type):
 
 
 def compute_ratings(DF):
-    ratings_df.iloc[1:, 1:] = 1000
+    ratings_df[ratings_df.columns.difference(["Name"])] = 1000
 
     for (
         index,
@@ -86,10 +86,10 @@ def compute_ratings(DF):
     ):  # for each game, update the ratings based upon the result of the game
         # Extract Names From Game
         YO, YD, PO, PD = (
-            results_df.loc["Yellow Offense", row],
-            results_df.loc["Yellow Defense", row],
-            results_df.loc["Purple Offense", row],
-            results_df.loc["Purple Defense", row],
+            results_df["Yellow Offense"].loc[index],
+            results_df["Yellow Defense"].loc[index],
+            results_df["Purple Offense"].loc[index],
+            results_df["Purple Defense"].loc[index],
         )
 
         # get game type 1v1 or 2v2
@@ -97,8 +97,8 @@ def compute_ratings(DF):
 
         # get the game result and K
 
-        yellow_score = DF.loc["Yellow Score", row]
-        purple_score = DF.loc["Purple Score", row]
+        yellow_score = int(results_df["Yellow Score"].loc[index])
+        purple_score = int(results_df["Purple Score"].loc[index])
 
         if yellow_score - purple_score > 0:
             SY, SP = 1, 0
@@ -108,13 +108,15 @@ def compute_ratings(DF):
             K = calculate_K(purple_score, yellow_score, game_type)
 
         # get ratings
-        RYO, RYD, RPO, RPD = get_correct_ratings(ratings_df)
+        RYO, RYD, RPO, RPD = get_correct_ratings(ratings_df, YO, YD, PO, PD)
 
         RY, RP = get_average_ratings(RYO, RYD, RPO, RPD, game_type)
 
         # calc probabilities
         EY = compute_EY(RY, RP)
         EP = compute_EP(EY)
+
+        print(K, EY, EP)
 
         # update Yellow Offense
         ratings_df.loc[ratings_df["Name"] == YO, "OFF Rating"] = update_RY(
@@ -136,9 +138,7 @@ def compute_ratings(DF):
             RPD, SP, EP, K
         )
 
-    return ratings_df
 
-
-ratings_df = compute_ratings(results_df)
+compute_ratings(results_df)
 
 print(ratings_df)
