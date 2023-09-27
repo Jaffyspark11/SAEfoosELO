@@ -76,14 +76,13 @@ def get_average_ratings(RYO, RYD, RPO, RPD, game_type):
 
 
 def compute_ratings(DF):
-    ratings_df[ratings_df.columns.difference(["Name"])] = 1000
-
     for (
         index,
         row,
     ) in (
         DF.iterrows()
     ):  # for each game, update the ratings based upon the result of the game
+        print("starting new game")
         # Extract Names From Game
         YO, YD, PO, PD = (
             results_df["Yellow Offense"].loc[index],
@@ -92,13 +91,18 @@ def compute_ratings(DF):
             results_df["Purple Defense"].loc[index],
         )
 
+        print(YO)
+
         # get game type 1v1 or 2v2
         game_type = get_game_type(YO, YD, PO, PD)
+        print(game_type)
 
         # get the game result and K
 
         yellow_score = int(results_df["Yellow Score"].loc[index])
         purple_score = int(results_df["Purple Score"].loc[index])
+        print(yellow_score)
+        print(purple_score)
 
         if yellow_score - purple_score > 0:
             SY, SP = 1, 0
@@ -110,13 +114,13 @@ def compute_ratings(DF):
         # get ratings
         RYO, RYD, RPO, RPD = get_correct_ratings(ratings_df, YO, YD, PO, PD)
 
+        print(RYO)
+
         RY, RP = get_average_ratings(RYO, RYD, RPO, RPD, game_type)
 
         # calc probabilities
         EY = compute_EY(RY, RP)
         EP = compute_EP(EY)
-
-        print(K, EY, EP)
 
         # update Yellow Offense
         ratings_df.loc[ratings_df["Name"] == YO, "OFF Rating"] = update_RY(

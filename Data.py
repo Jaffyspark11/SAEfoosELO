@@ -14,18 +14,27 @@ myclient = gspread.authorize(mycreds)
 
 spreadsheet = myclient.open("Foos Elo")
 
-gameResults = spreadsheet.sheet1
+worksheets = spreadsheet.worksheets()
 
-rows1 = gameResults.get("A:F")
+gameResults = worksheets[0]
+
+rows1 = gameResults.get_all_values()
+print(rows1[0])
 
 results_df = pd.DataFrame(rows1[1:], columns=rows1[0])
 
 
-playerNames = spreadsheet.get_worksheet(1)
+playerNames = worksheets[1]
 
-rows2 = playerNames.get("A:D")
+rows2 = playerNames.get_all_values()
+
+print(rows2[0])
 
 ratings_df = pd.DataFrame(rows2[1:], columns=rows2[0])
 
+for column in ratings_df.columns[1:]:
+    ratings_df[column] = "1000"
+    ratings_df[column].astype(float)
 
-print(results_df)
+
+print(ratings_df)
